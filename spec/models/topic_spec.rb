@@ -13,7 +13,7 @@ RSpec.describe Topic, type: :model do
       expect(topic).to have_attributes(name: name, description: description, public: public)
     end
 
-    it "is public by defaul" do
+    it "is public by default" do
       expect(topic.public).to be(true)
     end
   end
