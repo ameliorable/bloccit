@@ -10,6 +10,7 @@ RSpec.describe Post, type: :model do
   let(:user) { User.create!(name: "Bloccit User", email: "user@bloccit.com", password: "helloworld") }
 
   let(:post) { topic.posts.create!(title: title, body: body, user: user) }
+  let(:new_post) { topic.posts.create!(title: title, body: body, user: user) }
 
   it { is_expected.to have_many(:comments) }
   it { is_expected.to have_many(:votes) }
@@ -77,7 +78,7 @@ RSpec.describe Post, type: :model do
 
    describe "#create_vote" do
      it "sets the post up_votes to 1" do
-       expect(post.up_votes).to eq(1)
+       expect(new_post.up_votes).to eq(1)
      end
 
      it "calls #create_vote when a post is created" do
