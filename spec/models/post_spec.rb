@@ -4,6 +4,7 @@ RSpec.describe Post, type: :model do
   let(:topic) { create(:topic) }
   let(:user) { create(:user) }
   let(:post) { create(:post) }
+  let(:favorite) { Favorite.create!(post: post, user: user) }
 
   it { is_expected.to have_many(:comments) }
   it { is_expected.to have_many(:votes) }
@@ -21,7 +22,20 @@ RSpec.describe Post, type: :model do
 
   describe "attributes" do
     it "has title, body, and user attributes" do
-      expect(post).to have_attributes(title: post.title, body: post.body, user: post.user)
+      expect(post).to respond_to(:title, :body, :user)
+    end
+  end
+
+  describe "favorited scope filter" do
+    let (:another_post) { create(:post) }
+
+    it "returns a list of posts that the user favorited" do
+      user.favorites << favorite
+      expect(Post.favorited(user).first).to eq(post)
+    end
+
+    it "does not return posts that were not favorited" do
+      expect(Post.favorited(user).first).not_to eq(post)
     end
   end
 
